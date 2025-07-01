@@ -4,6 +4,8 @@ function App() {
   const [username, setUsername] = useState('');
   const [userData, setUserData] = useState(null);
   const [submittedUser, setSubmittedUser] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleInputChange = (e) => {
     setUsername(e.target.value);
@@ -18,6 +20,10 @@ function App() {
     if (!submittedUser) return;
 
     const fetchUserData = async () => {
+      setLoading(true);
+      setError('');
+      setUserData(null);
+
       try {
         const res = await fetch(`https://api.github.com/users/${submittedUser}`);
         if (!res.ok) {
@@ -25,14 +31,16 @@ function App() {
         }
         const data = await res.json();
         setUserData(data);
-      } catch (error) {
-        setUserData(null);
-        console.error('取得エラー:', error.message);
+      } catch (err) {
+        setError(err.message || '不明なエラー');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchUserData();
   }, [submittedUser]);
+
 
   return (
     <div className="p-6 max-w-xl mx-auto">
@@ -53,7 +61,17 @@ function App() {
         </button>
       </form>
 
-      {/* 取得したユーザーデータの表示 */}
+      {/* ローディング表示 */}
+      {loading && (
+        <p className="text-gray-500">読み込み中...</p>
+      )}
+
+      {/* エラー表示 */}
+      {error && (
+        <p className="text-red-500">{error}</p>
+      )}
+
+      {/* ユーザー情報の表示 */}
       {userData && (
         <div className="border p-4 rounded shadow">
           <img src={userData.avatar_url} alt="avatar" className="w-24 h-24 rounded-full mb-2" />
@@ -62,7 +80,10 @@ function App() {
           <p className="mt-2">{userData.bio || '自己紹介なし'}</p>
         </div>
       )}
+
     </div>
+
+
   );
 }
 
