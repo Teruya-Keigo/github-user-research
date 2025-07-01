@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import UserCard from './components/UserCard';
+
 
 function App() {
   const [username, setUsername] = useState('');
@@ -73,12 +75,7 @@ function App() {
 
       {/* ユーザー情報の表示 */}
       {userData && (
-        <div className="border p-4 rounded shadow">
-          <img src={userData.avatar_url} alt="avatar" className="w-24 h-24 rounded-full mb-2" />
-          <h2 className="text-xl font-bold">{userData.name || '名前なし'}</h2>
-          <p className="text-gray-600">@{userData.login}</p>
-          <p className="mt-2">{userData.bio || '自己紹介なし'}</p>
-        </div>
+        <UserCard user={userData} />
       )}
 
     </div>
