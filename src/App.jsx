@@ -1,48 +1,39 @@
 import { useState, useEffect } from 'react';
 import UserCard from './components/UserCard';
+import { useNavigate } from 'react-router-dom';
 
 
 function App() {
   const [username, setUsername] = useState('');
-  const [userData, setUserData] = useState(null);
-  const [submittedUser, setSubmittedUser] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [history, setHistory] = useState([]);
+
+
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const trimmed = username.trim();
+    if (trimmed !== '') {
+      const newHistory = [...new Set([trimmed, ...history])];
+      setHistory(newHistory);
+      localStorage.setItem('searchHistory', JSON.stringify(newHistory));
+      navigate(`/users/${trimmed}`);
+    }
+
+  };
 
   const handleInputChange = (e) => {
     setUsername(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmittedUser(username);  // 検索トリガー
-  };
+
 
   useEffect(() => {
-    if (!submittedUser) return;
-
-    const fetchUserData = async () => {
-      setLoading(true);
-      setError('');
-      setUserData(null);
-
-      try {
-        const res = await fetch(`https://api.github.com/users/${submittedUser}`);
-        if (!res.ok) {
-          throw new Error('ユーザーが見つかりません');
-        }
-        const data = await res.json();
-        setUserData(data);
-      } catch (err) {
-        setError(err.message || '不明なエラー');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [submittedUser]);
-
+    const stored = localStorage.getItem('searchHistory');
+    if (stored) {
+      setHistory(JSON.parse(stored));
+    }
+  }, []);
 
   return (
     <div className="p-6 max-w-xl mx-auto">
@@ -63,20 +54,35 @@ function App() {
         </button>
       </form>
 
-      {/* ローディング表示 */}
-      {loading && (
-        <p className="text-gray-500">読み込み中...</p>
+      {history.length > 0 && (
+        <div className="mt-6">
+          <h2 className="text-lg font-semibold mb-2">検索履歴</h2>
+          <ul className="space-y-1">
+            {history.map((name) => (
+              <li key={name}>
+                <button
+                  onClick={() => navigate(`/users/${name}`)}
+                  className="text-blue-500 hover:underline"
+                >
+                  {name}
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button
+            onClick={() => {
+              setHistory([]);
+              localStorage.removeItem('searchHistory');
+            }}
+            className="text-sm text-red-500 hover:underline mt-2"
+          >
+            履歴をすべて削除
+          </button>
+        </div>
       )}
 
-      {/* エラー表示 */}
-      {error && (
-        <p className="text-red-500">{error}</p>
-      )}
 
-      {/* ユーザー情報の表示 */}
-      {userData && (
-        <UserCard user={userData} />
-      )}
+
 
     </div>
 

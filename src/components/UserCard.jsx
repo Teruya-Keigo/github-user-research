@@ -11,6 +11,8 @@ function UserCard({ user }) {
                     <h2 className="text-xl font-bold">{user.name || '名前なし'}</h2>
                     <p className="text-gray-600">@{user.login}</p>
                     <p className="mt-1 text-sm text-gray-500">{user.bio || '自己紹介なし'}</p>
+                    <p className="mt-1 text-sm text-gray-500">公開リポジトリ数: {user.public_repos ?? '公開リポジトリなし'}</p>
+                    <p className="mt-1 text-sm text-gray-500">Followers:{user.followers} </p>
                     <a
                         href={user.html_url}
                         target="_blank"
