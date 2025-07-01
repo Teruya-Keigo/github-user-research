@@ -1,23 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
 
 function App() {
   const [username, setUsername] = useState('');
+  const [userData, setUserData] = useState(null);
+  const [submittedUser, setSubmittedUser] = useState('');
 
   const handleInputChange = (e) => {
     setUsername(e.target.value);
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // ページリロード防止
-    console.log('検索するユーザー名:', username);
+    e.preventDefault();
+    setSubmittedUser(username);  // 検索トリガー
   };
+
+  useEffect(() => {
+    if (!submittedUser) return;
+
+    const fetchUserData = async () => {
+      try {
+        const res = await fetch(`https://api.github.com/users/${submittedUser}`);
+        if (!res.ok) {
+          throw new Error('ユーザーが見つかりません');
+        }
+        const data = await res.json();
+        setUserData(data);
+      } catch (error) {
+        setUserData(null);
+        console.error('取得エラー:', error.message);
+      }
+    };
+
+    fetchUserData();
+  }, [submittedUser]);
+
   return (
     <div className="p-6 max-w-xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">GitHubユーザー検索</h1>
-      <form onSubmit={handleSubmit} className="flex gap-2">
+      <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
         <input
           type="text"
           value={username}
@@ -32,9 +52,19 @@ function App() {
           検索
         </button>
       </form>
+
+      {/* 取得したユーザーデータの表示 */}
+      {userData && (
+        <div className="border p-4 rounded shadow">
+          <img src={userData.avatar_url} alt="avatar" className="w-24 h-24 rounded-full mb-2" />
+          <h2 className="text-xl font-bold">{userData.name || '名前なし'}</h2>
+          <p className="text-gray-600">@{userData.login}</p>
+          <p className="mt-2">{userData.bio || '自己紹介なし'}</p>
+        </div>
+      )}
     </div>
   );
 }
 
+export default App;
 
-export default App
