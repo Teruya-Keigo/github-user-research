@@ -17,14 +17,6 @@ GitHubのユーザー名を検索すると、プロフィール情報を取得�
 - 履歴のローカル保存（localStorage）
 - 検索履歴のリセットボタン付き
 
-## 🌐 デプロイURL
-
-👉 [https://your-vercel-url.vercel.app](https://your-vercel-url.vercel.app)
-
-## 📷 スクリーンショット
-
-（画像があれば貼るとGood）
-
 ## 📁 インストールと実行
 
 ```bash
