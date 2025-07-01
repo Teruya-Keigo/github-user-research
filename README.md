@@ -1,12 +1,32 @@
-# React + Vite
+# GitHubユーザー検索アプリ
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+GitHubのユーザー名を検索すると、プロフィール情報を取得して表示するReactアプリです。
 
-Currently, two official plugins are available:
+## 🔧 使用技術
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React + Vite
+- Tailwind CSS
+- GitHub REST API
+- React Router
 
-## Expanding the ESLint configuration
+## 🚀 機能
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- GitHubユーザーのプロフィール表示
+- 検索履歴の表示・クリックで再検索
+- ページ遷移による詳細表示
+- 履歴のローカル保存（localStorage）
+- 検索履歴のリセットボタン付き
+
+## 🌐 デプロイURL
+
+👉 [https://your-vercel-url.vercel.app](https://your-vercel-url.vercel.app)
+
+## 📷 スクリーンショット
+
+（画像があれば貼るとGood）
+
+## 📁 インストールと実行
+
+```bash
+npm install
+npm run dev
