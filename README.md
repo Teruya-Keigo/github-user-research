@@ -22,3 +22,6 @@ GitHubのユーザー名を検索すると、プロフィール情報を取得�
 ```bash
 npm install
 npm run dev
+
+## 🌐 デプロイURL
+👉[https://github-user-research.vercel.app/](https://github-user-research.vercel.app/)
